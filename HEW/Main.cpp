@@ -3,10 +3,10 @@
 #include <memory>
 #include <iostream>
 
-
 #include "Setting.h"
 #include "condoi.h"
 #include "IScene.h"
+#include "ScreenBuffer.h"
 
 #include "SettingScene.h"
 #include "GameScene.h"
@@ -16,8 +16,11 @@ int main(){
 		std::cerr << "cl11error";
 		return 0;
 	}
-	ziat::initialize(&NEUTRAL_STICK_R_X, &NEUTRAL_STICK_R_Y, &NEUTRAL_STICK_L_X, &NEUTRAL_STICK_L_Y, &TARGET_FPS);
+	ziat::initialize(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
 	SetCursorVisibility(FALSE);
+
+	ScreenBuffer::Initialize();
+
 	auto FRAME_DURATION = std::chrono::milliseconds(1000) / TARGET_FPS;
 
 	std::unique_ptr<IScene> currentScene = std::make_unique<SettingScene>();
@@ -27,10 +30,12 @@ int main(){
 	while (isRunning) {
 		auto frame_start = std::chrono::steady_clock::now();
 
+		ScreenBuffer::Clear();
+
 		//ここにゲーム本体を挿入
 		SceneName nextScene = currentScene->Update();
 
-		currentScene->Draw();
+		currentScene->Draw(); ScreenBuffer::Show();//Drawでバッファに登録、Showで表示
 
 		if (nextScene != SceneName::None) {
 			switch (nextScene) {
