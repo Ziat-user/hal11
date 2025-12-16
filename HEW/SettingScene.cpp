@@ -10,6 +10,7 @@
 void SettingScene::Initialize() {
     stick_s_check = 0;
     trigger = 0;
+    fps_c = 0; // 初期化を追加
 }
 
 SceneName SettingScene::Update() {
@@ -28,6 +29,7 @@ SceneName SettingScene::Update() {
             return SceneName::Game;
         }
     }
+    fps_c++; // フレーム数をカウントアップ
     return SceneName::None; // 何もなければ維持
 }
 
@@ -40,4 +42,10 @@ void SettingScene::Draw() {
         ScreenBuffer::Print(1, 1, "設定が完了しました");
         ScreenBuffer::Print(1, 2, "←で次に進みます");
     }
+
+    // 現在のフレーム数を表示
+    const std::string fps_cs = std::to_string(fps_c);
+    const std::string fps_css = std::to_string(fps_c / 30);
+    ScreenBuffer::Print(1, 3, fps_cs);
+    ScreenBuffer::Print(1, 4, fps_css);
 }

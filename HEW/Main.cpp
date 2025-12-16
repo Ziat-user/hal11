@@ -2,6 +2,7 @@
 #include <thread>  //C++—p‚Ìsleep‚ÉŽg—p
 #include <memory>
 #include <iostream>
+#include <conio.h>
 
 #include "Setting.h"
 #include "condoi.h"
@@ -12,10 +13,11 @@
 #include "GameScene.h"
 
 int main(){
-	if (!CL11Startup()) {
+	/*if (!CL11Startup()) {
 		std::cerr << "cl11error";
 		return 0;
-	}
+	}*/
+	int fps_c = 0;
 	ziat::initialize(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
 	SetCursorVisibility(FALSE);
 
@@ -55,8 +57,12 @@ int main(){
 
 		auto frame_end = std::chrono::steady_clock::now();
 		auto elapsed_time = frame_end - frame_start;
-		if (elapsed_time < FRAME_DURATION) {
+		if (elapsed_time <= FRAME_DURATION) {
 			std::this_thread::sleep_for(FRAME_DURATION - elapsed_time);
+		}
+		else {
+			std::cerr << "fps‚ª‘«‚è‚È‚¢‚æ";
+			_getch();
 		}
 	}
 }

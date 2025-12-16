@@ -6,7 +6,7 @@
 
 namespace ziat {
 	void initialize(int& stickrx, int& stickry, int& sticklx, int& stickly, int& fps) {
-		fps = 60;
+		fps = 30;
 		stickrx = NX;
 		stickry = NY;
 		sticklx = NX;
