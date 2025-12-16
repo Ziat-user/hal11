@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 
-
 enum class PadButton : int {
 	PAD_LEFT = 1,
 	PAD_DOWN = 2,

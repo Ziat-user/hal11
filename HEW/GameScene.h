@@ -3,7 +3,8 @@
 
 class GameScene : public IScene {
 private:
-    int comment_timer = 0;
+    int comment_l_timer = 0;
+    int comment_r_timer = 0;
 public:
     void Initialize() override;
     SceneName Update() override;

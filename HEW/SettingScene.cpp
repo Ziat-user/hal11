@@ -5,12 +5,14 @@
 
 #include "SettingScene.h"
 
-
-
 void SettingScene::Initialize() {
     stick_s_check = 0;
     trigger = 0;
-    fps_c = 0; // 初期化を追加
+
+    // FPS計測初期化
+    last_check_time = std::chrono::steady_clock::now();
+    frames_in_interval = 0;
+    current_fps = 0.0;
 }
 
 SceneName SettingScene::Update() {
@@ -29,7 +31,17 @@ SceneName SettingScene::Update() {
             return SceneName::Game;
         }
     }
-    fps_c++; // フレーム数をカウントアップ
+
+    // 0.5秒ごとのFPS計測処理
+    frames_in_interval++;
+    auto now = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed = now - last_check_time;
+
+    if (elapsed.count() >= 0.5) {
+        current_fps = frames_in_interval / elapsed.count();
+        frames_in_interval = 0;
+        last_check_time = now;
+    }
     return SceneName::None; // 何もなければ維持
 }
 
@@ -42,10 +54,6 @@ void SettingScene::Draw() {
         ScreenBuffer::Print(1, 1, "設定が完了しました");
         ScreenBuffer::Print(1, 2, "←で次に進みます");
     }
-
-    // 現在のフレーム数を表示
-    const std::string fps_cs = std::to_string(fps_c);
-    const std::string fps_css = std::to_string(fps_c / 30);
-    ScreenBuffer::Print(1, 3, fps_cs);
-    ScreenBuffer::Print(1, 4, fps_css);
+    // 計測したFPSを表示
+    ScreenBuffer::Print(1, 5, "FPS: " + std::to_string(current_fps));
 }
