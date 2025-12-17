@@ -3,7 +3,11 @@
 
 namespace ziat {
 	// ボタンが押された瞬間かを判定する関数
-	bool IsButtonTriggered(PadButton button);
+	int IsButtonTriggered();
 	// スティックはじきを判定する関数
 	int IsStickTriggered();
+	//キーボード入力判定
+	bool IsKeybordTrigger(int key);
+	//ゲームパッド接続判定
+	bool IsGamepadConnect();
 }

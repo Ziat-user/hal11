@@ -5,11 +5,10 @@
 #include "setting.h"
 
 namespace ziat {
-	bool IsButtonTriggered(PadButton button) {
+	int IsButtonTriggered() {
 		static unsigned char prev_state = 0;
 		unsigned char current_padbtn_state = inport(PJ_BTNS);
-		unsigned char button_flag = static_cast<unsigned char>(button);
-		bool r = (current_padbtn_state & button_flag) && !(prev_state & button_flag);
+		int r = current_padbtn_state & ~prev_state;
 		prev_state = current_padbtn_state;
 		return r;
 	}
@@ -30,5 +29,15 @@ namespace ziat {
 		prev_l_dis = l_dis;
 		return i;
 	}
+
+	bool IsKeybordTrigger(int key) {
+		static int prev_state = 0;
+		int current_keybtn_state = inport(key);
+		bool r = current_keybtn_state && !prev_state;
+		prev_state = current_keybtn_state;
+		return r;
+	}
+
+	bool IsGamepadConnect() { return (inport(PJ_BTNS) > 0); }
 	
 }

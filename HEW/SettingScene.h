@@ -4,8 +4,10 @@
 
 class SettingScene : public IScene {
 private:
-    bool trigger = false;
+    bool bt_trigger = false;
     bool stick_s_check = false;
+    bool kb_trigger_enter = false;
+    bool gp_connect = false;
 
     // FPSŒv‘ª—p
     std::chrono::steady_clock::time_point last_check_time;

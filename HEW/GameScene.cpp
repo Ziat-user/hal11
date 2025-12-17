@@ -4,16 +4,24 @@
 #include "Setting.h"
 #include "ScreenBuffer.h" 
 
+#define CONIOEX
+#include "conioex.h"
+
 void GameScene::Initialize() {
+    st_trigger = 0;
+    bt_trigger = 0;
 	comment_l_timer = 0;
     comment_r_timer = 0;
+    kb_trigger_enter = false;
 }
 
 SceneName GameScene::Update() {
-	if (ziat::IsButtonTriggered(PadButton::PAD_LEFT))return SceneName::Exit;
-    short int trigger = ziat::IsStickTriggered();
-    if (trigger & 0b10) comment_l_timer = (TARGET_FPS > 0) ? TARGET_FPS : 60;
-    if (trigger & 0b01) comment_r_timer = (TARGET_FPS > 0) ? TARGET_FPS : 60;
+    bt_trigger = ziat::IsButtonTriggered();
+    st_trigger = ziat::IsStickTriggered();
+    kb_trigger_enter = ziat::IsKeybordTrigger(PK_ENTER);
+	if (((bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0) || kb_trigger_enter)return SceneName::Exit;
+    if (st_trigger & 0b10) comment_l_timer = (TARGET_FPS > 0) ? TARGET_FPS : 60;
+    if (st_trigger & 0b01) comment_r_timer = (TARGET_FPS > 0) ? TARGET_FPS : 60;
     if (comment_l_timer > 0) comment_l_timer--;
     if (comment_r_timer > 0) comment_r_timer--;
 	return SceneName::None;
