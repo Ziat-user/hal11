@@ -15,10 +15,10 @@
 #include "GameScene.h"
 
 int main() {
-	/*if (!CL11Startup()) {
+	if (!CL11Startup()) {
 		std::cerr << "cl11error";
 		return 0;
-	}*/
+	}
 	ziat::initialize(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
 	SetCursorVisibility(FALSE);
 

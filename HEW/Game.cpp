@@ -6,8 +6,12 @@
 
 namespace ziat {
 	int IsButtonTriggered() {
-		static unsigned char prev_state = 0;
-		unsigned char current_padbtn_state = inport(PJ_BTNS);
+		static int prev_state = 0;
+		int current_padbtn_state = inport(PJ_BTNS);
+		if (current_padbtn_state == -1) {
+			current_padbtn_state = 0;
+		}
+
 		int r = current_padbtn_state & ~prev_state;
 		prev_state = current_padbtn_state;
 		return r;
@@ -38,6 +42,8 @@ namespace ziat {
 		return r;
 	}
 
-	bool IsGamepadConnect() { return (inport(PJ_BTNS) > 0); }
-	
+	bool IsGamepadConnect() { 
+		return (inport(PJ_BTNS) != -1); 
+	}
+
 }

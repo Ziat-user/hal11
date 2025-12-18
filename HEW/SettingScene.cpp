@@ -4,6 +4,8 @@
 #include "ScreenBuffer.h"
 #define CONIOEX
 #include "conioex.h"
+#include "UI.h"
+#include "debug.h"
 
 #include "SettingScene.h"
 
@@ -13,11 +15,7 @@ void SettingScene::Initialize() {
     bt_trigger = 0;
     kb_trigger_enter = 0;
     stick_s_check = false;
-
-    // FPS計測初期化
-    last_check_time = std::chrono::steady_clock::now();
-    frames_in_interval = 0;
-    current_fps = 0.0;
+    debug = 0;
 }
 
 SceneName SettingScene::Update() {
@@ -27,7 +25,7 @@ SceneName SettingScene::Update() {
     if (gp_connect) {
         if (stick_s_check == false) {
             // まだ設定が完了していない場合
-            if (((bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0) || kb_trigger_enter) {
+            if (((bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0) || kb_trigger_enter){
                 ziat::setting_stick(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y);
                 stick_s_check = true; // 設定完了フラグを立てる
             }
@@ -42,40 +40,33 @@ SceneName SettingScene::Update() {
     }
     else {
         // コントローラー未接続の場合、Enterキーでゲームへ
-        if (kb_trigger_enter) {
+        if (((bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0) || kb_trigger_enter) {
             return SceneName::Game;
         }
     }
-
-    // 0.5秒ごとのFPS計測処理
-    frames_in_interval++;
-    auto now = std::chrono::steady_clock::now();
-    std::chrono::duration<double> elapsed = now - last_check_time;
-
-    if (elapsed.count() >= 0.5) {
-        current_fps = frames_in_interval / elapsed.count();
-        frames_in_interval = 0;
-        last_check_time = now;
-    }
+    if (ziat::getDebugkey()) debug = !debug;
+    
     return SceneName::None; // 何もなければ維持
 }
 
 void SettingScene::Draw() {
+    ziat::create_square(3, 4, 50, 4, '=', '|', '+');
+ 
     if (gp_connect) {
         if (stick_s_check == false) {
-            ScreenBuffer::Print(1, 1, "コントローラーの設定を変更します");
-            ScreenBuffer::Print(1, 2, "コントローラーがニュートラルの状態で、←ボタンを押してください");
+            ScreenBuffer::Print(5, 5, "コントローラーの設定を変更します");
+            ScreenBuffer::Print(5, 6, "コントローラーがニュートラルの状態で、←ボタンを押してください");
         }
         else {
-            ScreenBuffer::Print(1, 1, "設定が完了しました");
-            ScreenBuffer::Print(1, 2, "←で次に進みます");
+            ScreenBuffer::Print(5, 5, "設定が完了しました");
+            ScreenBuffer::Print(5, 6, "←で次に進みます");
         }
     }
     else {
-        ScreenBuffer::Print(1, 1, "コントローラーが接続されていません");
-        ScreenBuffer::Print(1, 2, "Enterキーを押してゲームを開始します");
+        ScreenBuffer::Print(5, 5, "コントローラーが接続されていません");
+        ScreenBuffer::Print(5, 6, "Enterキーを押してゲームを開始します");
     }
 
-    // 計測したFPSを表示
-    ScreenBuffer::Print(1, 5, "FPS: " + std::to_string(current_fps));
+    if (debug)ziat::showDebugBox(60, 20);
+    
 }
