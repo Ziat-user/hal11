@@ -1,62 +1,78 @@
-#include <chrono> //時刻取得に使用
-//#include <thread>  //C++用のsleepに使用
+#include <chrono>
 #include <memory>
 #include <iostream>
 #include <conio.h>
-//#include <fstream>
-//#include <typeinfo>
+
 
 #include "Setting.h"
-#include "condoi.h"
+#include "main.h"
 #include "IScene.h"
 #include "ScreenBuffer.h"
+#include "debug.h"
 
 #include "SettingScene.h"
 #include "GameScene.h"
+#include "TitleScene.h"
 
 int main() {
-	if (!CL11Startup()) {
-		std::cerr << "cl11error";
-		return 0;
+	if (HEWConsoleStartup(0) != 0) {
+		std::cerr << ("Initialization failed.\n");
+		HEWConsoleCleanup(0);
+		return 1;
 	}
+	setcursortype(NOCURSOR);
 	ziat::initialize(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
-	SetCursorVisibility(FALSE);
+
+	// 60固定（更新も描画も同一）
+	TARGET_FPS = 60;
 
 	ScreenBuffer::Initialize();
 
-	// milliseconds から microseconds に変更して精度を向上
-	auto FRAME_DURATION = std::chrono::microseconds(1000000) / TARGET_FPS;
-	auto last_frame = std::chrono::steady_clock::now();
-	std::unique_ptr<IScene> currentScene = std::make_unique<SettingScene>();
+	using clock = std::chrono::steady_clock;
+	using us = std::chrono::microseconds;
 
+	const auto FRAME_DT = us(1000000 / 60); // 60fps
+	auto last = clock::now();
+
+	std::unique_ptr<IScene> currentScene = std::make_unique<TitleScene>();
 	currentScene->Initialize();
+
 	bool isRunning = true;
 	while (isRunning) {
-		auto frame_start = std::chrono::steady_clock::now();
-		if (frame_start - last_frame >= FRAME_DURATION) {
-			last_frame = frame_start;
-			ScreenBuffer::Clear();
+		const auto now = clock::now();
+		const auto elapsed = std::chrono::duration_cast<us>(now - last);
 
-			//ここにゲーム本体を挿入
+		if (elapsed >= FRAME_DT) {
+			last = now;
+
 			SceneName nextScene = currentScene->Update();
 
-			currentScene->Draw(); ScreenBuffer::Show();//Drawでバッファに登録、Showで表示
+			ScreenBuffer::Clear();
+			currentScene->Draw();
+			ScreenBuffer::Show();
 
+			// シーン遷移
 			if (nextScene != SceneName::None) {
 				switch (nextScene) {
 				case SceneName::Title:
-					currentScene = std::make_unique<SettingScene>(); // タイトルに入れ替え
+					currentScene = std::make_unique<TitleScene>();
+					currentScene->Initialize();
+					break;
+				case SceneName::Setting:
+					currentScene = std::make_unique<SettingScene>();
 					currentScene->Initialize();
 					break;
 				case SceneName::Game:
-					currentScene = std::make_unique<GameScene>();  // ゲームに入れ替え
+					currentScene = std::make_unique<GameScene>();
 					currentScene->Initialize();
 					break;
 				case SceneName::Exit:
-					isRunning = false; // ループを抜ける
+					isRunning = false;
 					break;
 				}
 			}
 		}
 	}
+	HEWConsoleCleanup(0);
+	return 0;
 }

@@ -1,14 +1,18 @@
 #pragma once
 #include "IScene.h"
-#include <chrono>
+#include "Blinker.h"
+#include "Animation.h"
 
-class SettingScene : public IScene {
+class TitleScene : public IScene {
 private:
     int bt_trigger = 0;
-    bool stick_s_check = false;
     bool kb_trigger_enter = false;
-    bool gp_connect = false;
+    bool kb_trigger_esc = false;
     bool debug = false;
+    Blinker pressBlink{ 30 };
+
+    // í«â¡ÅFîwåió¨ÇÍêØÅiScreenBufferÇÕ80x25Åj
+    Starfield starfield{ 80, 25 };
 
 public:
     void Initialize() override;

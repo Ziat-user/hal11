@@ -4,9 +4,13 @@
 #include <iostream>
 #include <string>
 
+#include "Setting.h"
+
 namespace ziat {
 	void initialize(int& stickrx, int& stickry, int& sticklx, int& stickly, int& fps) {
-		fps = 60;
+		fps = 120;
+		TARGET_RENDER_FPS = 60;
+
 		stickrx = NX;
 		stickry = NY;
 		sticklx = NX;

@@ -4,15 +4,22 @@
 
 enum class PadButton : int {
 	PAD_LEFT = 1,
-	PAD_DOWN = 2,
-	PAD_RIGHT = 4,
-	PAD_UP = 8,
+	PAD_UP = 2,
+	PAD_DOWN = 4,
+	PAD_RIGHT = 8,
 	PAD_L_BUMPER = 16,
 	PAD_R_BUMPER = 32,
 	PAD_L_TRIGGER = 64,
 	PAD_R_TRIGGER = 128,
 	PAD_LS_PRESS = 256,
 	PAD_RS_PRESS = 512,
+	PAD_BACK = 1024,
+	PAD_START = 2048,
+	PAD_GUIDE = 4096,
+};
+
+enum class rightleft {
+	LEFT,RIGHT
 };
 
 // ボタンのビット値と表示名を関連付ける構造体
@@ -35,6 +42,9 @@ inline const std::vector<ButtonMapping>& getButtonMappings() {
 		{ PadButton::PAD_R_TRIGGER, "R Trigger" },
 		{ PadButton::PAD_LS_PRESS, "LS press" },
 		{ PadButton::PAD_RS_PRESS, "RS Press" },
+		{ PadButton::PAD_BACK, "BACK" },
+		{ PadButton::PAD_START, "START" },
+		{ PadButton::PAD_GUIDE, "GUIDE" },
 	};
 	return buttonMappings;
 }

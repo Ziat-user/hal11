@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,6 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,6 +120,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -124,29 +128,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="condoi.h" />
-    <ClInclude Include="conioex.h" />
-    <ClInclude Include="debug.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="gamepad.h" />
-    <ClInclude Include="ScreenBuffer.h" />
-    <ClInclude Include="Setting.h" />
-    <ClInclude Include="SettingScene.h" />
-    <ClInclude Include="UI.h" />
+    <ClInclude Include="Core\Animation.h" />
+    <ClInclude Include="Core\Blinker.h" />
+    <ClInclude Include="UI\hew_console.h" />
+    <ClInclude Include="IO\conioex.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="UI\debug.h" />
+    <ClInclude Include="Scenes\GameScene.h" />
+    <ClInclude Include="IO\Input.h" />
+    <ClInclude Include="IO\gamepad.h" />
+    <ClInclude Include="Scenes\IScene.h" />
+    <ClInclude Include="UI\ScreenBuffer.h" />
+    <ClInclude Include="Core\Setting.h" />
+    <ClInclude Include="Scenes\SettingScene.h" />
+    <ClInclude Include="Scenes\TitleScene.h" />
+    <ClInclude Include="UI\UI.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="condoi.cpp" />
-    <ClCompile Include="conerr.cpp" />
-    <ClCompile Include="debug.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="GameScene.h" />
+    <ClCompile Include="IO\conioex_impl.cpp" />
+    <ClCompile Include="Core\Animation.cpp" />
+    <ClCompile Include="Core\Blinker.cpp" />
+    <ClCompile Include="UI\debug.cpp" />
+    <ClCompile Include="Core\Game.cpp" />
+    <ClCompile Include="Scenes\GameScene.cpp" />
+    <ClCompile Include="IO\Input.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="IScene.h" />
-    <ClCompile Include="ScreenBuffer.cpp" />
-    <ClCompile Include="Setting.cpp" />
-    <ClCompile Include="SettingScene.cpp" />
-    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Scenes\SettingScene.cpp" />
+    <ClCompile Include="UI\ScreenBuffer.cpp" />
+    <ClCompile Include="Core\Setting.cpp" />
+    <ClCompile Include="Scenes\TitleScene.cpp" />
+    <ClCompile Include="UI\UI.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="IO\hew_console_x64_md.lib" />
+    <Library Include="IO\hew_console_x64_mt.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

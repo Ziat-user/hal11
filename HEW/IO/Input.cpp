@@ -17,7 +17,7 @@ namespace ziat {
 		return r;
 	}
 
-	int IsStickTriggered() {
+	int IsStickFrickTriggered() {
 		static long long prev_r_dis = 0;
 		static long long prev_l_dis = 0;
 		int i = 0b00;
@@ -35,15 +35,26 @@ namespace ziat {
 	}
 
 	bool IsKeybordTrigger(int key) {
-		static int prev_state = 0;
-		int current_keybtn_state = inport(key);
-		bool r = current_keybtn_state && !prev_state;
-		prev_state = current_keybtn_state;
-		return r;
+		// Virtual-Key ÇÕí èÌ 0..255
+		if (key < 0 || key > 0xFF) return false;
+
+		static unsigned char prev_state[256] = {}; // ÉLÅ[Ç≤Ç∆Ç…ï€éù
+		const int current = inport(key) ? 1 : 0;
+
+		const bool triggered = (current != 0) && (prev_state[key] == 0);
+		prev_state[key] = static_cast<unsigned char>(current);
+		return triggered;
 	}
 
 	bool IsGamepadConnect() { 
 		return (inport(PJ_BTNS) != -1); 
+	}
+
+	void getInportGamepad(int& a, int& b, int& c, int& d) {
+		a = inport(PJ_XPOS);
+		b = inport(PJ_YPOS);
+		c = inport(PJ_ZPOS);
+		d = inport(PJ_RPOS);
 	}
 
 }
