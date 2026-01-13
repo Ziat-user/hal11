@@ -7,7 +7,7 @@ public:
 	Starfield(int width, int height);
 
 	void Reset();
-	void Tick(); // 1フレーム進める
+	void Tick(); 
 	void Draw(int originX = 0, int originY = 0) const; // ScreenBufferへ描画（座標オフセット）
 
 	// 設定

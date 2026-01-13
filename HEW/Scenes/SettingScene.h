@@ -14,7 +14,6 @@ private:
     bool fpsPulldownOpen = false;
     int fpsSelectedIndex = 0;
 
-    // 追加：UIフォーカス
     enum class Focus {
         Pulldown,
         DecideButton,

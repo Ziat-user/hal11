@@ -41,7 +41,6 @@ SceneName TitleScene::Update() {
 }
 
 void TitleScene::Draw() {
-    // 背景：流れ星（先に描くと、UIが上に乗る）
     starfield.Draw();
 
     ziat::create_square(10, 6, 60, 12, '=', '|', '+');

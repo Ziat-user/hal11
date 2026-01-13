@@ -11,7 +11,6 @@ private:
     bool debug = false;
     Blinker pressBlink{ 30 };
 
-    // ’Ç‰ÁF”wŒi—¬‚ê¯iScreenBuffer‚Í80x25j
     Starfield starfield{ 80, 25 };
 
 public:
