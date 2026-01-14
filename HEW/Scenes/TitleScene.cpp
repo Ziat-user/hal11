@@ -26,7 +26,8 @@ void TitleScene::Initialize() {
 SceneName TitleScene::Update() {
     pressBlink.Tick();
     starfield.Tick();
-
+    ziat::getInportGamepad(sticklx,stickly,stickrx,stickry);
+    st_trigger = ziat::getInportStick(sticklx, stickly, stickrx, stickry);
     bt_trigger = ziat::IsButtonTriggered();
     kb_trigger_enter = ziat::IsKeybordTrigger(PK_ENTER);
     kb_trigger_esc = ziat::IsKeybordTrigger(PK_ESC);
@@ -53,5 +54,6 @@ void TitleScene::Draw() {
     if (pressBlink.IsOn()) {
         ScreenBuffer::Print(23, 15, ">>> PRESS ENTER <<<");
     }
+    if (st_trigger & static_cast<int>(ziat::STICKVECTOR::LsDOWN)) ScreenBuffer::Print(23, 17, "leftstick");
     if (debug) ziat::showDebugBox(60, 19);
 }
