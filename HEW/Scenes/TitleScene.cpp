@@ -54,6 +54,5 @@ void TitleScene::Draw() {
     if (pressBlink.IsOn()) {
         ScreenBuffer::Print(23, 15, ">>> PRESS ENTER <<<");
     }
-    if (st_trigger & static_cast<int>(ziat::STICKVECTOR::LsDOWN)) ScreenBuffer::Print(23, 17, "leftstick");
     if (debug) ziat::showDebugBox(60, 19);
 }

@@ -76,7 +76,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;$(ProjectDir)Map;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,7 +92,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;$(ProjectDir)Map;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,7 +107,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;$(ProjectDir)Map;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -120,7 +122,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Core;$(ProjectDir)IO;$(ProjectDir)UI;$(ProjectDir)Scenes;$(ProjectDir)Map;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +133,9 @@
   <ItemGroup>
     <ClInclude Include="Core\Animation.h" />
     <ClInclude Include="Core\Blinker.h" />
+    <ClInclude Include="Core\Game.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Map\Map.h" />
     <ClInclude Include="UI\hew_console.h" />
     <ClInclude Include="IO\conioex.h" />
     <ClInclude Include="Main.h" />
@@ -148,6 +154,8 @@
     <ClCompile Include="IO\conioex_impl.cpp" />
     <ClCompile Include="Core\Animation.cpp" />
     <ClCompile Include="Core\Blinker.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="UI\debug.cpp" />
     <ClCompile Include="Core\Game.cpp" />
     <ClCompile Include="Scenes\GameScene.cpp" />
@@ -162,6 +170,9 @@
   <ItemGroup>
     <Library Include="IO\hew_console_x64_md.lib" />
     <Library Include="IO\hew_console_x64_mt.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

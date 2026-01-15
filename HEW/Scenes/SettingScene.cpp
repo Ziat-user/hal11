@@ -53,7 +53,8 @@ SceneName SettingScene::Update() {
 
     bt_trigger = ziat::IsButtonTriggered();
     kb_trigger_enter = ziat::IsKeybordTrigger(PK_ENTER);
-
+    ziat::getInportGamepad(sticklx, stickly, stickrx, stickry);
+    st_trigger = ziat::getInportStick(sticklx, stickly, stickrx, stickry);
     const bool keyUp = ziat::IsKeybordTrigger(PK_UP);
     const bool keyDown = ziat::IsKeybordTrigger(PK_DOWN);
     const bool keyEsc = ziat::IsKeybordTrigger(PK_ESC);
@@ -64,10 +65,13 @@ SceneName SettingScene::Update() {
     const bool padRight = (bt_trigger & static_cast<int>(PadButton::PAD_RIGHT)) != 0;
     const bool padLeft = (bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0;
 
+    const bool stickUp = (st_trigger & static_cast<int>(ziat::StickVector::LsUP));
+    const bool stickDown = (st_trigger & static_cast<int>(ziat::StickVector::LsDOWN));
+
     // --- プルダウンが開いている間は、選択処理を最優先 ---
     if (fpsPulldownOpen) {
-        if (keyUp || padUp) fpsSelectedIndex--;
-        if (keyDown || padDown) fpsSelectedIndex++;
+        if (padUp || stickUp) fpsSelectedIndex--;
+        if (padDown || stickDown) fpsSelectedIndex++;
 
         fpsSelectedIndex = clamp_index(fpsSelectedIndex, static_cast<int>(kRenderFpsChoices.size()));
 
@@ -87,7 +91,7 @@ SceneName SettingScene::Update() {
     }
 
     // --- フォーカス移動（プルダウンが閉じている時だけ）---
-    if (keyTab || keyUp || keyDown || padUp || padDown) {
+    if (keyTab || padUp || padDown || stickUp || stickDown) {
         focus = (focus == Focus::Pulldown) ? Focus::DecideButton : Focus::Pulldown;
     }
 

@@ -1,67 +1,112 @@
-#  Project ()
-個人情報もくそもあったもんじゃねえ
+# HEW（Console Game Framework / C++20）
 
-C++20 と Windows コンソール API を使用した、コンソールベースのゲームアプリケーションフレームワークです。
-シーン管理、ゲームパッド入力、ダブルバッファリングによる描画制御を備えています。
+Windows コンソール上で動作する、シーン管理＋入力＋描画をまとめた小規模ゲームフレームワークです。  
+描画は `ScreenBuffer` を介して行い、チラつきを抑えつつ「一定フレームだけ表示するテキスト」も扱えます。
 
-## 特徴
+## 動作環境
 
-*   **シーン管理システム**: `IScene` インターフェースによるシーン遷移（設定画面 → ゲーム画面 → 終了）。
-*   **コンソール描画制御**:
-    *   `ScreenBuffer` クラスによる擬似ダブルバッファリングで、画面のチラつき（フリッカー）を防止。
-    *   `conioex.h` / `condoi.h` による拡張コンソール操作（カーソル制御、フォント設定など）。
-*   **入力処理**:
-    *   ゲームパッド（DirectInput/JoyApi）対応。
-    *   スティックのニュートラル設定機能。
-    *   ボタンやスティックのトリガー判定。
-*   **フレームレート制御**: `std::chrono` を使用した固定FPSループ。
+- OS: Windows 10 / 11
+- IDE: Visual Studio 2022
+- 言語標準: C++20（最低でも C++17）
+  - `Core/Setting.h` で `inline` 変数を使っているため、`/std:c++17` 以上が必要
 
-## 必要要件
+## ビルド
 
-*   **OS**: Windows 10 / 11
-*   **コンパイラ**: Visual Studio 2022 (C++20 対応)
-*   **ライブラリ**: Windows SDK (`winmm.lib` 等は自動リンクまたはプロジェクト設定で必要)
+1. `HEW.sln` を Visual Studio 2022 で開く
+2. プロジェクトの __C++ 言語標準__ を **ISO C++20 (/std:c++20)** に設定  
+   （__プロパティ > 構成プロパティ > C/C++ > 言語 > C++ 言語標準__）
+3. __ビルド > ソリューションのビルド__
+4. __デバッグ > デバッグの開始__
 
-## ビルドと実行
+## 実行ループ（概要）
 
-1.  `HEW.sln` を Visual Studio 2022 で開きます。
-2.  ソリューション構成を `Debug` または `Release`、プラットフォームを `x64` (または `x86`) に設定します。
-3.  **ビルド** > **ソリューションのビルド** を実行します。
-4.  **デバッグ** > **デバッグの開始** で実行します。
+`Main.cpp` のメインループは概ね以下です。
 
-## 操作方法
+- 60FPS 固定で `Update()` / `Draw()` を回す
+- 毎フレーム `ScreenBuffer::Clear()` → `Draw()` → `ScreenBuffer::Show()`
 
-### 設定画面 (SettingScene)
-起動直後に表示される画面です。
-1.  コントローラーのスティックを触らず（ニュートラル状態）、**←ボタン**（PAD_LEFT）を押して初期設定を行います。
-2.  設定完了後、再度 **←ボタン** を押すとゲーム画面へ進みます。
+## シーン
 
-### ゲーム画面 (GameScene)
-*   **右スティック操作**: スティックを倒すと「右スティックが反応しました！」と1秒間表示されます。
-*   **←ボタン**: ゲームを終了します。
+`IScene` を基底にして `Initialize / Update / Draw` を実装します。
 
-## プロジェクト構成
+### TitleScene
+- タイトル表示 + 流れ星アニメーション（`Starfield`）
+- Enter / PAD_RIGHT で Setting へ
+- ESC / PAD_LEFT で終了
+- デバッグ表示は `Ctrl+Shift+Alt`（`debug.cpp` の `getDebugkey()`）で切替
 
-*   `Main.cpp`: エントリーポイント。メインループ、FPS制御、シーン管理の統括。
-*   `IScene.h`: シーンの基底インターフェース (`Initialize`, `Update`, `Draw`)。
-*   `SettingScene.cpp/h`: コントローラーの初期設定を行うシーン。
-*   `GameScene.cpp/h`: メインゲーム画面のシーン。
-*   `ScreenBuffer.cpp/h`: 画面描画用バッファ。`Print` で書き込み、`Show` で一括表示。
-*   `gamepad.h`: ゲームパッド入力定義。
-*   `conioex.h`: コンソール入出力の拡張ライブラリ。
-*   `condoi.cpp/h`: コンソールウィンドウの設定（フォント、サイズなど）。
+### SettingScene
+- 描画FPS（`TARGET_RENDER_FPS`）のプルダウンUI
+- Tab / ↑↓ でフォーカス移動、Enter / → で決定
 
-## 開発者向け情報
+### GameScene
+- テスト用の画面
+- スティック「はじき」検出でメッセージを一定時間表示
 
-### 新しいシーンの追加
-1.  `IScene` を継承した新しいクラスを作成します。
-2.  `Initialize`, `Update`, `Draw` を実装します。
-3.  `Main.cpp` の `switch` 文に遷移ロジックを追加します。
+## 描画（ScreenBuffer）
 
-### 描画について
-`std::cout` を直接使用せず、`ScreenBuffer::Print(x, y, "text")` を使用してください。
-座標は (1, 1) が左上です。
+`std::cout` へ直接出さず、`ScreenBuffer` を使って描画します。座標は **(1,1) が左上**。
+
+### レイヤー構成
+`ScreenBuffer` は2レイヤーです。
+
+- **base**: 毎フレーム `Clear()` で全面消去される（通常描画はこちら）
+- **overlay**: 指定フレームだけ残る描画用（`frames > 0` のときだけ使用）
+
+`Show()` では **overlay が base より優先**されます（overlay が空白以外なら overlay が表示される）。
+
+### Print の仕様
+
+
+- `frames == 0`（省略）: base に描画（毎フレーム再描画する前提）
+- `frames > 0` : overlay に描画し、指定フレーム経過で自動的に消える
+
+例:
+- 常時表示（毎フレーム描く用途）
+  - `ScreenBuffer::Print(10, 5, "HELLO");`
+- 60フレームだけ表示（Drawで1回描くだけでも残る）
+  - `ScreenBuffer::Print(10, 6, "TEMP", 60);`
+
+注意:
+- overlay は base より前面に出るため、同じ座標付近にデバッグUI等があると見えづらくなる場合があります。
+
+## アニメーション（Starfield）
+
+`Core/Animation.*` の `Starfield` は、毎フレーム `ScreenBuffer::Print(..., frames=0)`（=base）で星と尾を描きます。  
+base が毎フレームクリアされる設計のため、残像が汚くならずに表示されます。
+
+## 入力
+
+`IO/Input.*`
+
+- ゲームパッド接続確認: `ziat::IsGamepadConnect()`
+- ボタンのトリガー（押した瞬間）: `ziat::IsButtonTriggered()`
+- キーボードのトリガー: `ziat::IsKeybordTrigger(VK_...)`
+- スティック状態（ビットフラグ）: `ziat::getInportStick(...)`
+- スティックの「はじき」: `ziat::IsStickFrickTriggered()`
+
+`enum class STICKVECTOR` のフラグで方向を判定します。
+
+## 主なファイル構成
+
+- `Main.cpp` : エントリーポイント / 固定FPSループ / シーン遷移
+- `IScene.h` : シーンインターフェース
+- `Scenes/TitleScene.*` : タイトル + 流れ星表示
+- `Scenes/SettingScene.*` : FPS設定UI（プルダウン）
+- `Scenes/GameScene.*` : テスト画面
+- `UI/ScreenBuffer.*` : base + overlay の2レイヤー描画、フレーム保持表示
+- `UI/UI.*` : 枠/プルダウン等のUI描画
+- `Core/Animation.*` : `Starfield`（流れ星）
+- `IO/Input.*` : ゲームパッド/キーボード入力
+- `UI/debug.*` : デバッグ表示（FPS/パッド状態など）
+- `IO/conioex*` : コンソール操作（gotoxy 等）
+- `Core/Setting.h` : グローバル設定値（`inline` 変数）
 
 ## ライセンス
 
 Copyright 2025 Shiuta.
+
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^{\!\!2} \leq
+\left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```

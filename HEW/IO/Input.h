@@ -15,21 +15,20 @@ namespace ziat {
 	bool IsGamepadConnect();
 	// 
 	void getInportGamepad(int& a, int& b, int& c, int& d);
-	//bitで管理　1の位から左sl 左sr 左su 左sd 右sl 右sr 右su 右sd
+	//bitで管理　1の位から左sr 左sl 左sd 左su 右sr 右sl 右sd 右su
 	int getInportStick(int nowx, int nowy, int nouz, int nowr);
 
-	enum class STICKVECTOR {
-		LsLEFT  = 0b00000001,
-		LsRIGHT = 0b00000010,
-		LsUP    = 0b00000100,
-		LsDOWN  = 0b00001000,
-		RsLEFT  = 0b00010000,
-		RsRIGHT = 0b00100000,
+	enum class StickVector {
+		LsRIGHT = 0b00000001,
+		LsLEFT  = 0b00000010,
+		LsDOWN  = 0b00000100,
+		LsUP    = 0b00001000,
+		RsRIGHT = 0b00010000,
+		RsLEFT  = 0b00100000,
 		RsUP    = 0b01000000,
 		RsDOWN  = 0b10000000
 	};
 	//EQUAL:同値、GREATER:大なり、SMALLER:小なり
 	bool trigger(int prev_state, int now_state, int trigger_state, triggermode mode);
-	
 	
 }

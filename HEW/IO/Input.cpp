@@ -52,6 +52,7 @@ namespace ziat {
 		return (inport(PJ_BTNS) != -1); 
 	}
 
+	//x,y,z,r
 	void getInportGamepad(int& a, int& b, int& c, int& d) {
 		a = inport(PJ_XPOS);
 		b = inport(PJ_YPOS);
@@ -71,17 +72,18 @@ namespace ziat {
 		if (trigger(prev_z, nowz, 0,     triggermode::EQUAL)) r |= 0b00100000;
 		if (trigger(prev_r, nowr, 65535, triggermode::EQUAL)) r |= 0b01000000;
 		if (trigger(prev_r, nowr, 0,     triggermode::EQUAL)) r |= 0b10000000;
+		prev_x = nowx; prev_y = nowy; prev_z = nowz; prev_r = nowr;
 		return r;
 	}
 
 	// prev_state:1f前, now_state,現在, trigger_state:トリガーとなる値 mode:EQUAL,GREATER,SMALLER
 	bool trigger(int prev_state, int now_state, int trigger_state,triggermode mode) {
 		if (mode == triggermode::EQUAL)
-			return prev_state != trigger_state && now_state == trigger_state;
+			return (prev_state != trigger_state) && (now_state == trigger_state);
 		if (mode == triggermode::GREATER)
-			return prev_state < trigger_state && now_state >= trigger_state;
+			return (prev_state < trigger_state) && (now_state >= trigger_state);
 		if (mode == triggermode::SMALLER)
-			return prev_state > trigger_state && now_state <= trigger_state;
+			return (prev_state > trigger_state) && (now_state <= trigger_state);
 		std::cerr << "trigger get error";
 		return 0;
 	}
