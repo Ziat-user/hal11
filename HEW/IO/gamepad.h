@@ -52,7 +52,7 @@ inline const std::vector<ButtonMapping>& getButtonMappings() {
 inline constexpr int NX = 32767;
 inline constexpr int NY = 32511;//自分のコントローラーのニュートラル値
 
-inline constexpr int NZONE = 3000;
+inline constexpr int NZONE = 5000;
 inline constexpr int FZONE = 13000;//フリック入力用
 inline constexpr long long NZSQ = 1LL * NZONE * NZONE;
 inline constexpr long long FZSQ = 1LL * FZONE * FZONE;

@@ -133,8 +133,7 @@
   <ItemGroup>
     <ClInclude Include="Core\Animation.h" />
     <ClInclude Include="Core\Blinker.h" />
-    <ClInclude Include="Core\Game.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="Core\CharacterMove.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="UI\hew_console.h" />
     <ClInclude Include="IO\conioex.h" />
@@ -154,10 +153,9 @@
     <ClCompile Include="IO\conioex_impl.cpp" />
     <ClCompile Include="Core\Animation.cpp" />
     <ClCompile Include="Core\Blinker.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="UI\debug.cpp" />
-    <ClCompile Include="Core\Game.cpp" />
+    <ClCompile Include="Core\CharacterMove.cpp" />
     <ClCompile Include="Scenes\GameScene.cpp" />
     <ClCompile Include="IO\Input.cpp" />
     <ClCompile Include="Main.cpp" />

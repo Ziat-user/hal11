@@ -33,7 +33,7 @@ SceneName TitleScene::Update() {
     kb_trigger_esc = ziat::IsKeybordTrigger(PK_ESC);
 
     const bool start = kb_trigger_enter || ((bt_trigger & static_cast<int>(PadButton::PAD_RIGHT)) != 0);
-    const bool exit = kb_trigger_esc || ((bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0);
+    const bool exit = kb_trigger_esc || ((bt_trigger & static_cast<int>(PadButton::PAD_BACK)) != 0);
 
     if (exit) return SceneName::Exit;
     if (start) return SceneName::Setting;

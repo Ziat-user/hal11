@@ -4,11 +4,13 @@
 #include "Setting.h"
 #include "ScreenBuffer.h" 
 #include "debug.h"
+#include "Map.h"
 
 #define CONIOEX
 #include "conioex.h"
 
 void GameScene::Initialize() {
+    ziat::InitializeMap();
     debug = false;
     st_trigger = 0;
     bt_trigger = 0;

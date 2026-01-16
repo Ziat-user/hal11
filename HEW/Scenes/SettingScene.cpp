@@ -70,8 +70,8 @@ SceneName SettingScene::Update() {
 
     // --- プルダウンが開いている間は、選択処理を最優先 ---
     if (fpsPulldownOpen) {
-        if (padUp || stickUp) fpsSelectedIndex--;
-        if (padDown || stickDown) fpsSelectedIndex++;
+        if (keyUp || stickUp) fpsSelectedIndex--;
+        if (keyDown || stickDown) fpsSelectedIndex++;
 
         fpsSelectedIndex = clamp_index(fpsSelectedIndex, static_cast<int>(kRenderFpsChoices.size()));
 
@@ -91,7 +91,7 @@ SceneName SettingScene::Update() {
     }
 
     // --- フォーカス移動（プルダウンが閉じている時だけ）---
-    if (keyTab || padUp || padDown || stickUp || stickDown) {
+    if (keyTab || keyUp || keyDown || stickUp || stickDown) {
         focus = (focus == Focus::Pulldown) ? Focus::DecideButton : Focus::Pulldown;
     }
 

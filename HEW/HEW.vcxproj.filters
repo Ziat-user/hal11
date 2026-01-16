@@ -60,10 +60,7 @@
     <ClInclude Include="UI\hew_console.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="Core\CharacterMove.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Map\Map.h">
@@ -89,7 +86,7 @@
     <ClCompile Include="UI\debug.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Game.cpp">
+    <ClCompile Include="Core\CharacterMove.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Scenes\TitleScene.cpp">
@@ -108,9 +105,6 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="IO\conioex_impl.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Map\Map.cpp">
