@@ -16,15 +16,9 @@
 #include "TitleScene.h"
 
 int main() {
-	int start = hew_console_start(-1);
-	if (start != 0) {
-		// 初期化失敗時のフォールバック処理（必要なら）
-		hew_console_restore();
-		std::cerr << start;
-		return 0;
-	}
-	setcursortype(NOCURSOR);
-	ziat::initialize(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
+	
+	if (!ziat::initConsole()) return 0;
+	ziat::initGamepad(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
 
 	// 60固定（更新も描画も同一）
 	TARGET_FPS = 60;

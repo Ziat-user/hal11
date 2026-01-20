@@ -4,10 +4,11 @@
 #include <iostream>
 #include <string>
 
+#include "hew_console.h"
 #include "Setting.h"
 
 namespace ziat {
-	void initialize(int& stickrx, int& stickry, int& sticklx, int& stickly, int& fps) {
+	void initGamepad(int& stickrx, int& stickry, int& sticklx, int& stickly, int& fps) {
 		fps = 120;
 		TARGET_RENDER_FPS = 60;
 
@@ -15,6 +16,18 @@ namespace ziat {
 		stickry = NY;
 		sticklx = NX;
 		stickly = NY;
+	}
+
+	//falseでエラーを返す
+	bool initConsole() {
+		if (int start = hew_console_start(static_cast<int>(ConWindow::Auto)); start != 0) {
+			std::cerr << "error:" << start;
+			hew_console_restore();
+			return false;
+		}
+		//カーソル非表示
+		setcursortype(NOCURSOR);
+		return true;
 	}
 
 	void setting_stick(int& stickrx, int& stickry, int& sticklx, int& stickly) {
