@@ -2,7 +2,8 @@
 #include <memory>
 #include <iostream>
 #include <conio.h>
-
+#define CONIOEX
+#include "conioex.h"
 
 #include "Setting.h"
 #include "main.h"
@@ -15,10 +16,12 @@
 #include "TitleScene.h"
 
 int main() {
-	if (HEWConsoleStartup(0) != 0) {
-		std::cerr << ("Initialization failed.\n");
-		HEWConsoleCleanup(0);
-		return 1;
+	int start = hew_console_start(-1);
+	if (start != 0) {
+		// 初期化失敗時のフォールバック処理（必要なら）
+		hew_console_restore();
+		std::cerr << start;
+		return 0;
 	}
 	setcursortype(NOCURSOR);
 	ziat::initialize(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
@@ -73,6 +76,6 @@ int main() {
 			}
 		}
 	}
-	HEWConsoleCleanup(0);
+	hew_console_restore();
 	return 0;
 }
