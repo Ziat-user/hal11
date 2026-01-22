@@ -44,7 +44,7 @@ SceneName TitleScene::Update() {
 void TitleScene::Draw() {
     starfield.Draw();
 
-    ziat::create_square(10, 6, 60, 12, '=', '|', '+');
+    ziat::create_square(10, 6, 60, 12, '-', '|', '+');
 
     ScreenBuffer::Print(25, 8, "HEW - TITLE (TEST)");
     ScreenBuffer::Print(16, 10, "ENTER / PAD_RIGHT : START");

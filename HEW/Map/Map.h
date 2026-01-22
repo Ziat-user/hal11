@@ -4,14 +4,22 @@
 namespace ziat {
 
 	enum class Groundtype {
-		Air,
-		normal, // 地面扱いにする予定のタイル
+		AIR,
+		NORMAL, // 地面扱いにする予定のタイル
+		THORN,
 	};
 
 	struct Tile {
-		char glyph = ' ';                 // 表示用（任意）
-		Groundtype ground = Groundtype::Air; // タグ
+		char glyph;        // 表示用（任意）
+		Groundtype ground; // タグ
 	};
+
+	inline const std::vector<Tile> block = {
+		{' ',Groundtype::AIR},
+		{'=',Groundtype::NORMAL},
+		{'*',Groundtype::THORN},
+	};
+
 
 	inline constexpr int MAP_WIDTH = 80;
 	inline constexpr int MAP_HEIGHT = 25;

@@ -14,5 +14,5 @@ enum class ConWindow {
 namespace ziat {
 	void initGamepad(int& stickrx, int& stickry, int& sticklx, int& stickly, int& fps);
 	void setting_stick(int& stickrx, int& stickry, int& sticklx, int& stickly);
-	bool initConsole();
+	bool initConsole(bool on = 1);
 }

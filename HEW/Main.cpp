@@ -17,7 +17,7 @@
 
 int main() {
 	
-	if (!ziat::initConsole()) return 0;
+	if (!ziat::initConsole(0)) return 0;
 	ziat::initGamepad(NEUTRAL_STICK_R_X, NEUTRAL_STICK_R_Y, NEUTRAL_STICK_L_X, NEUTRAL_STICK_L_Y, TARGET_FPS);
 
 	// 60固定（更新も描画も同一）

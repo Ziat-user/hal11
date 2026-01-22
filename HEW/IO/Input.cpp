@@ -13,7 +13,6 @@ namespace ziat {
 		if (current_padbtn_state == -1) {
 			current_padbtn_state = 0;
 		}
-
 		int r = current_padbtn_state & ~prev_state;
 		prev_state = current_padbtn_state;
 		return r;

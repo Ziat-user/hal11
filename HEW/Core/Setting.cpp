@@ -18,8 +18,9 @@ namespace ziat {
 		stickly = NY;
 	}
 
-	//falseでエラーを返す
-	bool initConsole() {
+	//falseでエラーを返す on1off0
+	bool initConsole(bool on) {
+		if (on)
 		if (int start = hew_console_start(static_cast<int>(ConWindow::Auto)); start != 0) {
 			std::cerr << "error:" << start;
 			hew_console_restore();
