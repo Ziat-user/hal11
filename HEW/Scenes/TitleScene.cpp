@@ -10,7 +10,6 @@
 #include "UI.h"
 
 void TitleScene::Initialize() {
-    bt_trigger = 0;
     kb_trigger_enter = false;
     kb_trigger_esc = false;
     debug = 0;
@@ -26,14 +25,11 @@ void TitleScene::Initialize() {
 SceneName TitleScene::Update() {
     pressBlink.Tick();
     starfield.Tick();
-    ziat::getInportGamepad(sticklx,stickly,stickrx,stickry);
-    st_trigger = ziat::getInportStick(sticklx, stickly, stickrx, stickry);
-    bt_trigger = ziat::IsButtonTriggered();
     kb_trigger_enter = ziat::IsKeybordTrigger(PK_ENTER);
     kb_trigger_esc = ziat::IsKeybordTrigger(PK_ESC);
 
-    const bool start = kb_trigger_enter || ((bt_trigger & static_cast<int>(PadButton::PAD_RIGHT)) != 0);
-    const bool exit = kb_trigger_esc || ((bt_trigger & static_cast<int>(PadButton::PAD_BACK)) != 0);
+    const bool start = (kb_trigger_enter != 0);
+    const bool exit = (kb_trigger_esc  != 0);
 
     if (exit) return SceneName::Exit;
     if (start) return SceneName::Setting;
@@ -44,7 +40,7 @@ SceneName TitleScene::Update() {
 void TitleScene::Draw() {
     starfield.Draw();
 
-    ziat::create_square(10, 6, 60, 12, '-', '|', '+');
+    ziat::create_spbuble (10, 6, 60, 12, '-', '|', '+',0,1);
 
     ScreenBuffer::Print(25, 8, "HEW - TITLE (TEST)");
     ScreenBuffer::Print(16, 10, "ENTER / PAD_RIGHT : START");

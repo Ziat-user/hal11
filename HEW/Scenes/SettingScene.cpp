@@ -28,12 +28,8 @@ static int choice_to_fps(const std::string& s) {
 }
 
 void SettingScene::Initialize() {
-    if (ziat::IsGamepadConnect()) gp_connect = true;
-    else gp_connect = false;
 
-    bt_trigger = 0;
     kb_trigger_enter = 0;
-    stick_s_check = false;
     debug = 0;
 
     if (TARGET_RENDER_FPS <= 0) TARGET_RENDER_FPS = 120;
@@ -51,38 +47,27 @@ void SettingScene::Initialize() {
 
 SceneName SettingScene::Update() {
 
-    bt_trigger = ziat::IsButtonTriggered();
     kb_trigger_enter = ziat::IsKeybordTrigger(PK_ENTER);
-    ziat::getInportGamepad(sticklx, stickly, stickrx, stickry);
-    st_trigger = ziat::getInportStick(sticklx, stickly, stickrx, stickry);
     const bool keyUp = ziat::IsKeybordTrigger(PK_UP);
     const bool keyDown = ziat::IsKeybordTrigger(PK_DOWN);
     const bool keyEsc = ziat::IsKeybordTrigger(PK_ESC);
     const bool keyTab = ziat::IsKeybordTrigger(VK_TAB);
 
-    const bool padUp = (bt_trigger & static_cast<int>(PadButton::PAD_UP)) != 0;
-    const bool padDown = (bt_trigger & static_cast<int>(PadButton::PAD_DOWN)) != 0;
-    const bool padRight = (bt_trigger & static_cast<int>(PadButton::PAD_RIGHT)) != 0;
-    const bool padLeft = (bt_trigger & static_cast<int>(PadButton::PAD_LEFT)) != 0;
-
-    const bool stickUp = (st_trigger & static_cast<int>(ziat::StickVector::LsUP));
-    const bool stickDown = (st_trigger & static_cast<int>(ziat::StickVector::LsDOWN));
-
     // --- プルダウンが開いている間は、選択処理を最優先 ---
     if (fpsPulldownOpen) {
-        if (keyUp || stickUp) fpsSelectedIndex--;
-        if (keyDown || stickDown) fpsSelectedIndex++;
+        if (keyUp) fpsSelectedIndex--;
+        if (keyDown) fpsSelectedIndex++;
 
         fpsSelectedIndex = clamp_index(fpsSelectedIndex, static_cast<int>(kRenderFpsChoices.size()));
 
         // 適用して閉じる: Enter / →
-        if (kb_trigger_enter || padRight) {
+        if (kb_trigger_enter) {
             TARGET_RENDER_FPS = choice_to_fps(kRenderFpsChoices[fpsSelectedIndex]);
             fpsPulldownOpen = false;
         }
 
         // キャンセル: Esc / ←
-        if (keyEsc || padLeft) {
+        if (keyEsc) {
             fpsPulldownOpen = false;
         }
 
@@ -91,20 +76,20 @@ SceneName SettingScene::Update() {
     }
 
     // --- フォーカス移動（プルダウンが閉じている時だけ）---
-    if (keyTab || keyUp || keyDown || stickUp || stickDown) {
+    if (keyTab || keyUp || keyDown) {
         focus = (focus == Focus::Pulldown) ? Focus::DecideButton : Focus::Pulldown;
     }
 
     // --- フォーカスに応じた操作 ---
     if (focus == Focus::Pulldown) {
         // 開く: Enter / →
-        if (kb_trigger_enter || padRight) {
+        if (kb_trigger_enter) {
             fpsPulldownOpen = true;
         }
     }
     else { // Focus::DecideButton
         // 「設定完了」を押したら GameScene へ
-        if (kb_trigger_enter || padRight) {
+        if (kb_trigger_enter) {
             return SceneName::Game;
         }
     }
@@ -116,8 +101,8 @@ SceneName SettingScene::Update() {
 void SettingScene::Draw() {
     ziat::create_square(3, 4, 56, 12, '=', '|', '+');
 
-    ScreenBuffer::Print(5, 5, "描画FPS（プルダウン式）");
-    ScreenBuffer::Print(5, 6, "Tab / ↑↓でフォーカス移動、Enter / →で決定");
+    ScreenBuffer::Print(5, 5, u8"描画FPS（プルダウン式）");
+    ScreenBuffer::Print(5, 6, u8"Tab / ↑↓でフォーカス移動、Enter / →で決定");
 
     // プルダウン
     

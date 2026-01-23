@@ -28,6 +28,7 @@ namespace ziat {
 		RsUP    = 0b01000000,
 		RsDOWN  = 0b10000000
 	};
+
 	//EQUAL:“¯’lAGREATER:‘å‚È‚èASMALLER:¬‚È‚è
 	bool trigger(int prev_state, int now_state, int trigger_state, triggermode mode);
 	

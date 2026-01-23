@@ -35,4 +35,16 @@ namespace ziat {
         bool open,
         int visibleRows = 6
     );
+
+    // ふきだし型のbox
+    // x,y: 左上座標（1-origin想定。ScreenBuffer::Printに合わせる）
+    // xs,ys: 枠の横幅,縦幅（最小4推奨）
+    // xedge,yedge: それぞれの文字列
+    // Type:
+    // RL:左右
+    void create_spbuble(
+        int x, int y, int xs, int ys,
+        char x_edge, char y_edge, char vertex,
+        int Type, int RL
+    );
 }

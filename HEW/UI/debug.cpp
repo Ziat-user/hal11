@@ -70,7 +70,7 @@ namespace ziat {
 
     void showDebugBox(int x, int y) {
         showFPS(x, y);
-        showGamepadstick(x, y + 1);
-        showGamepadbtns(x, y + 5);
+        /*showGamepadstick(x, y + 1);
+        showGamepadbtns(x, y + 5);*/
     }
 }
